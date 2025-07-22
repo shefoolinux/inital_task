@@ -1,0 +1,42 @@
+package com.example.siemens_initial_project.siemens_initial_project.entity;
+import java.util.Date;
+
+import com.example.siemens_initial_project.siemens_initial_project.utils.TaskStatus;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Setter
+@Getter
+@AllArgsConstructor
+@Table(uniqueConstraints=@UniqueConstraint(columnNames = {"title"},name="unique_title_constraint"))
+public class Task {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
+    private String description;
+    
+    @Column(nullable = false)
+    private Date dueDate;
+
+    @Column(nullable = false)
+    private TaskStatus status;
+
+    
+
+}
