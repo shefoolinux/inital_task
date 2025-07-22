@@ -12,12 +12,14 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Setter
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(uniqueConstraints=@UniqueConstraint(columnNames = {"title"},name="unique_title_constraint"))
 public class Task {
 
