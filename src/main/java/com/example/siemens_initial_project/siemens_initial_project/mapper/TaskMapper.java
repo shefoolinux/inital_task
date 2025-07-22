@@ -18,7 +18,7 @@ public interface TaskMapper {
 
     List<TaskDto> toDtoList(List<Task> tasks);
 
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "task.id", ignore = true)
     void update(@MappingTarget Task task, TaskDto taskDto);
 
 }
