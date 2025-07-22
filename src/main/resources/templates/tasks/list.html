@@ -18,7 +18,30 @@
 
         h1 {
             margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        form.filter-form {
             margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        form.filter-form input,
+        form.filter-form select {
+            padding: 6px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        form.filter-form button {
+            padding: 6px 12px;
+            background-color: #5382e7;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
 
         table {
@@ -60,7 +83,7 @@
         }
 
         a.create-btn:hover {
-            background-color: #5382e7;
+            background-color: #3f6cd8;
         }
     </style>
 </head>
@@ -68,6 +91,26 @@
 <body>
     <h1>All Tasks</h1>
 
+    <form class="filter-form" method="get" th:action="@{/tasks/filter}">
+        <label for="date">Filter by Due Date:</label>
+        <input type="date" name="dueDate" id="date" th:value="${dueDate}">
+
+        <label for="status">Status:</label>
+        <select name="status" id="status">
+            <option value="">All</option>
+            <option
+                th:each="s : ${T(com.example.siemens_initial_project.siemens_initial_project.model.enums.TaskStatus).values()}"
+                th:value="${s}" th:text="${s}" th:selected="${s.name() == status}">
+            </option>
+        </select>
+
+        <button type="submit">Filter</button>
+
+
+    </form>
+
+
+    <!-- Tasks Table -->
     <table>
         <tr>
             <th>ID</th>
@@ -81,11 +124,12 @@
             <td th:text="${task.id}"></td>
             <td th:text="${task.title}"></td>
             <td th:text="${task.description}"></td>
-            <td th:text="${task.dueDate}"></td>
+            <td th:text="${#temporals.format(task.dueDate, 'dd MMM yyyy')}"></td>
             <td th:text="${task.status}"></td>
             <td>
                 <a th:href="@{'/tasks/update/' + ${task.id}}" class="action" title="Edit">📝</a>
-                <a th:href="@{'/tasks/delete/' + ${task.id}}" class="action" title="Delete" onclick="return confirm('Are you sure?')">🗑️</a>
+                <a th:href="@{'/tasks/delete/' + ${task.id}}" class="action" title="Delete"
+                    onclick="return confirm('Are you sure?')">🗑️</a>
             </td>
         </tr>
     </table>
