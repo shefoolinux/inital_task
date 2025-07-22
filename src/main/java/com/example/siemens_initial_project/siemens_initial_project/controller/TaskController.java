@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.siemens_initial_project.siemens_initial_project.dto.TaskDto;
 import com.example.siemens_initial_project.siemens_initial_project.services.TaskService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -33,13 +34,13 @@ public class TaskController {
   }
 
   @PostMapping
-  public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
+  public ResponseEntity<TaskDto> createTask(@Valid @RequestBody TaskDto taskDto) {
     TaskDto createdTask = taskService.createTask(taskDto);
     return ResponseEntity.ok(createdTask);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<TaskDto> updateTask(@PathVariable Long id, @RequestBody TaskDto taskDto) {
+  public ResponseEntity<TaskDto> updateTask(@PathVariable Long id, @Valid @RequestBody TaskDto taskDto) {
     TaskDto updatedTask = taskService.updateTask(id, taskDto);
     return ResponseEntity.ok(updatedTask);
   }
