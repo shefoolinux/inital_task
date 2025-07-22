@@ -1,7 +1,7 @@
-package com.example.siemens_initial_project.siemens_initial_project.entity;
-import java.util.Date;
+package com.example.siemens_initial_project.siemens_initial_project.model;
+import java.time.LocalDate;
 
-import com.example.siemens_initial_project.siemens_initial_project.utils.TaskStatus;
+import com.example.siemens_initial_project.siemens_initial_project.model.enums.TaskStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,7 +34,7 @@ public class Task {
     private String description;
     
     @Column(nullable = false)
-    private Date dueDate;
+    private LocalDate dueDate;
 
     @Column(nullable = false)
     private TaskStatus status;

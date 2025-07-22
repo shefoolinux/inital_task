@@ -1,16 +1,22 @@
 package com.example.siemens_initial_project.siemens_initial_project.repository;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
-import com.example.siemens_initial_project.siemens_initial_project.entity.Task;
+import com.example.siemens_initial_project.siemens_initial_project.model.Task;
+import com.example.siemens_initial_project.siemens_initial_project.model.enums.TaskStatus;
 
 
 public interface TaskRepository  extends JpaRepository<Task, Long> {
 
 
-    @Query("SELECT t FROM Task t WHERE t.title = ?1")
     public Optional<Task> findByTitle(String title);
+
+    List<Task> findByStatus(TaskStatus status);
+    List<Task> findByDueDate(LocalDate dueDate);
+    List<Task> findByStatusAndDueDate(TaskStatus status, LocalDate dueDate);
+
 }
