@@ -76,7 +76,7 @@ public class TaskViewController {
     @PostMapping("/create")
     public String createTask(@ModelAttribute TaskDto taskDto) {
         taskService.createTask(taskDto);
-        return "tasks";
+        return "redirect:/tasks";
     }
 
     @GetMapping("/filter")
