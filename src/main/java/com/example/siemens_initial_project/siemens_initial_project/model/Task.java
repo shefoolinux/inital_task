@@ -1,4 +1,5 @@
 package com.example.siemens_initial_project.siemens_initial_project.model;
+
 import java.time.LocalDate;
 
 import com.example.siemens_initial_project.siemens_initial_project.model.enums.TaskStatus;
@@ -20,7 +21,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(uniqueConstraints=@UniqueConstraint(columnNames = {"title"},name="unique_title_constraint"))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "title" }, name = "unique_title_constraint"))
 public class Task {
 
     @Id
@@ -32,13 +33,11 @@ public class Task {
 
     @Column(nullable = false)
     private String description;
-    
+
     @Column(nullable = false)
     private LocalDate dueDate;
 
     @Column(nullable = false)
     private TaskStatus status;
-
-    
 
 }

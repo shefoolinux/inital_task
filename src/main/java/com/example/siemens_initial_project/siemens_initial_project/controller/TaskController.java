@@ -58,11 +58,11 @@ public class TaskController {
     return ResponseEntity.ok(updatedTask);
   }
 
-    @GetMapping("/filter")
-    public ResponseEntity<List<TaskDto>> filterTasks(@RequestParam(required = false) TaskStatus status,
-        @RequestParam(required = false) LocalDate dueDate) {
-      List<TaskDto> filteredTasks = taskService.filterTasks(status, dueDate);
-      return ResponseEntity.ok(filteredTasks);
+  @GetMapping("/filter")
+  public ResponseEntity<List<TaskDto>> filterTasks(@RequestParam(required = false) TaskStatus status,
+      @RequestParam(required = false) LocalDate dueDate) {
+    List<TaskDto> filteredTasks = taskService.filterTasks(status, dueDate);
+    return ResponseEntity.ok(filteredTasks);
 
   }
 }

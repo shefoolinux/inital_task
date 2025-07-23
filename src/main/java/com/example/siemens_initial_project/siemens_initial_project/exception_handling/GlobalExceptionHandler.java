@@ -11,10 +11,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public String handleIllegalArgumentHtml(IllegalArgumentException ex, Model model) {
         model.addAttribute("errorMessage", "Invalid input: " + ex.getMessage());
-        return "error"; 
+        return "error";
     }
-
- 
 
     @ExceptionHandler(Exception.class)
     public String handleGeneralException(Exception ex, Model model) {
