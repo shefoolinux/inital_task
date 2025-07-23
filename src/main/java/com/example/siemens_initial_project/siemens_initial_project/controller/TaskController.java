@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.siemens_initial_project.siemens_initial_project.dto.TaskDto;
+import com.example.siemens_initial_project.siemens_initial_project.model.enums.TaskStatus;
 import com.example.siemens_initial_project.siemens_initial_project.services.TaskService;
 
 import jakarta.validation.Valid;
@@ -58,7 +59,7 @@ public class TaskController {
   }
 
     @GetMapping("/filter")
-    public ResponseEntity<List<TaskDto>> filterTasks(@RequestParam(required = false) String status,
+    public ResponseEntity<List<TaskDto>> filterTasks(@RequestParam(required = false) TaskStatus status,
         @RequestParam(required = false) LocalDate dueDate) {
       List<TaskDto> filteredTasks = taskService.filterTasks(status, dueDate);
       return ResponseEntity.ok(filteredTasks);

@@ -84,13 +84,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskDto> filterTasks(String status, LocalDate dueDate) {
+    public List<TaskDto> filterTasks(TaskStatus status, LocalDate dueDate) {
         List<Task> tasks;
 
         if (status != null && dueDate != null) {
-            tasks = taskRepository.findByStatusAndDueDate(TaskStatus.valueOf(status.toUpperCase()), dueDate);
+            tasks = taskRepository.findByStatusAndDueDate(status, dueDate);
         } else if (status != null) {
-            tasks = taskRepository.findByStatus(TaskStatus.valueOf(status.toUpperCase()));
+            tasks = taskRepository.findByStatus(status);
         } else if (dueDate != null) {
             tasks = taskRepository.findByDueDate(dueDate);
         } else {

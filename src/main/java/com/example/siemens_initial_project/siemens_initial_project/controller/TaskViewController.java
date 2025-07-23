@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,7 +49,6 @@ public class TaskViewController {
     public String showUpdateForm(@PathVariable Long id, Model model) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid task Id:" + id));
-        System.out.println(task.getDueDate() + "-----------------------------------------------");
         TaskDto taskDto = taskMapper.toDto(task);
         model.addAttribute("task", taskDto);
         return "tasks/update";
@@ -59,7 +57,6 @@ public class TaskViewController {
     @PostMapping("/update")
     public String updateTask(@Valid TaskDto taskDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            System.out.println("Validation errors found: " + bindingResult.getAllErrors());
             return "tasks/update";
         }
 
@@ -74,7 +71,10 @@ public class TaskViewController {
     }
 
     @PostMapping("/create")
-    public String createTask(@ModelAttribute TaskDto taskDto) {
+    public String createTask(@Valid TaskDto taskDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "tasks/create_task";
+        }
         taskService.createTask(taskDto);
         return "redirect:/tasks";
     }
@@ -86,7 +86,7 @@ public class TaskViewController {
             Model model) {
 
         List<TaskDto> filteredTasks = taskService.filterTasks(
-                status != null ? status.name() : null,
+                status,
                 dueDate);
         model.addAttribute("tasks", filteredTasks);
         return "tasks/list";
