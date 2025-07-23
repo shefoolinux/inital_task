@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -43,6 +42,7 @@ public class TaskServiceTest {
 
     @BeforeEach
     public void setUp() {
+
         today = LocalDate.now();
         taskDto = new TaskDto(
                 1L,
@@ -140,15 +140,13 @@ public class TaskServiceTest {
     @Test
     public void markAsCompleted_ShouldMarkTaskAsCompletedSuccessfully() {
         when(taskRepository.findById(taskId)).thenReturn(Optional.of(taskEntity));
-        taskEntity.setStatus(TaskStatus.COMPLETED);
-        taskDto.setStatus(taskEntity.getStatus());
         when(taskRepository.save(taskEntity)).thenReturn(taskEntity);
         when(taskMapper.toDto(taskEntity)).thenReturn(taskDto);
 
-        TaskDto result = taskService.markAsCompleted(taskId);
+        TaskDto result = taskService.markAsCompleted(taskId); 
 
         assertNotNull(result);
-        assertEquals(TaskStatus.COMPLETED, result.getStatus());
+        assertEquals(TaskStatus.COMPLETED, taskEntity.getStatus());
 
         verify(taskRepository, times(1)).findById(taskId);
         verify(taskRepository, times(1)).save(taskEntity);
@@ -184,7 +182,6 @@ public class TaskServiceTest {
         verify(taskMapper, times(1)).toDtoList(List.of(taskEntity));
     }
 
-    
     @Test
     public void filterTasks_ShouldReturnFilteredTasks_WhenDateIsToday_And_StatusIsPending() {
         when(taskRepository.findByStatusAndDueDate(TaskStatus.PENDING, today)).thenReturn(List.of(taskEntity));
