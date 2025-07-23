@@ -8,7 +8,6 @@ import org.mapstruct.MappingTarget;
 
 import com.example.siemens_initial_project.siemens_initial_project.dto.TaskDto;
 import com.example.siemens_initial_project.siemens_initial_project.model.Task;
-
 @Mapper(componentModel = "spring")
 public interface TaskMapper {
 

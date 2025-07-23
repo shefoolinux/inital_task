@@ -102,9 +102,9 @@
         <label for="description">Description:</label>
         <textarea id="description" th:field="*{description}" rows="4" required></textarea>
 
-        <label for="dueDate">Due Date:</label>
         <input type="date" id="dueDate" th:field="*{dueDate}" required
-            th:value="${#temporals.format(task.dueDate, 'yyyy-MM-dd')}" />
+            th:value="${#temporals.format(task.dueDate, 'yyyy-MM-dd')}"
+            th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" />
 
         <label for="status">Status:</label>
         <select id="status" th:field="*{status}">

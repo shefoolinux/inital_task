@@ -106,9 +106,7 @@
 
         <label for="dueDate">Due Date:</label>
         <input type="date" id="dueDate" name="dueDate" th:value="${#temporals.format(task.dueDate, 'yyyy-MM-dd')}"
-            required />
-
-
+            th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" required />
 
 
         <label for="status">Status:</label>
