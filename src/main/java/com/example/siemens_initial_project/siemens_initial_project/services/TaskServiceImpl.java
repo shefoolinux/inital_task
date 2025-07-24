@@ -13,6 +13,11 @@ import com.example.siemens_initial_project.siemens_initial_project.repository.Ta
 
 import lombok.AllArgsConstructor;
 
+/**
+ * Service implementation for managing tasks.
+ * Provides business logic for creating, retrieving, updating, deleting, and
+ * filtering tasks.
+ */
 @Service
 @AllArgsConstructor
 
@@ -20,6 +25,15 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
+
+    /**
+     * Creates a new task.
+     * If the title already exists, it throws an IllegalStateException.
+     * If status is not set, defaults to PENDING.
+     *
+     * @param taskDto the task data to create
+     * @return the created TaskDto
+     */
 
     @Override
     public TaskDto createTask(TaskDto taskDto) {
@@ -38,12 +52,29 @@ public class TaskServiceImpl implements TaskService {
         return savedTaskDto;
     }
 
+    /**
+     * Retrieves all tasks from the database.
+     *
+     * @return list of all TaskDto
+     */
+
     @Override
     public List<TaskDto> getAllTasks() {
         List<Task> tasks = taskRepository.findAll();
         List<TaskDto> taskDtos = taskMapper.toDtoList(tasks);
         return taskDtos;
     }
+
+    /**
+     * Updates a task by its ID.
+     * If the task is not found, throws IllegalArgumentException.
+     * If the new title already exists and is different, throws
+     * IllegalStateException.
+     *
+     * @param id      the ID of the task to update
+     * @param taskDto the new data for the task
+     * @return the updated TaskDto
+     */
 
     @Override
     public TaskDto updateTask(Long id, TaskDto taskDto) {
@@ -65,6 +96,13 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toDto(updatedTask);
     }
 
+    /**
+     * Deletes a task by its ID.
+     * If the task is not found, throws IllegalArgumentException.
+     *
+     * @param id the ID of the task to delete
+     */
+
     @Override
     public void deleteTask(Long id) {
         if (!taskRepository.existsById(id)) {
@@ -72,6 +110,14 @@ public class TaskServiceImpl implements TaskService {
         }
         taskRepository.deleteById(id);
     }
+
+    /**
+     * Marks a task as COMPLETED by its ID.
+     * If the task is not found, throws IllegalArgumentException.
+     *
+     * @param id the ID of the task to mark
+     * @return the updated TaskDto with status COMPLETED
+     */
 
     @Override
     public TaskDto markAsCompleted(Long id) {
@@ -83,6 +129,14 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toDto(updatedTask);
     }
 
+    /**
+     * Filters tasks based on status and/or due date.
+     * Returns all tasks if no filter is provided.
+     *
+     * @param status  the status to filter by (nullable)
+     * @param dueDate the due date to filter by (nullable)
+     * @return list of TaskDto matching the filter
+     */
     @Override
     public List<TaskDto> filterTasks(TaskStatus status, LocalDate dueDate) {
         List<Task> tasks;
