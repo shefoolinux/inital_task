@@ -26,9 +26,7 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
 
-
-      // ----------------------Create A New Task ----------------------
-
+    // ----------------------Create A New Task ----------------------
 
     /**
      * Creates a new task.
@@ -57,9 +55,17 @@ public class TaskServiceImpl implements TaskService {
     }
 
 
-  // ----------------------Get All Tasks----------------------
+    /**
+     * Checks if a task with the given title already exists.
+     *
+     * @param title the title to check
+     * @return true if a task with the title exists, false otherwise
+     */
+    public boolean isTitleTaken(String title) {
+        return taskRepository.existsByTitle(title);
+    }
 
-
+    // ----------------------Get All Tasks----------------------
 
     /**
      * Retrieves all tasks from the database.
@@ -74,9 +80,7 @@ public class TaskServiceImpl implements TaskService {
         return taskDtos;
     }
 
-
-  // ----------------------Update A Task ----------------------
-
+    // ----------------------Update A Task ----------------------
 
     /**
      * Updates a task by its ID.
@@ -109,9 +113,7 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toDto(updatedTask);
     }
 
-
-      // ----------------------Delete A Task ----------------------
-
+    // ----------------------Delete A Task ----------------------
 
     /**
      * Deletes a task by its ID.
@@ -128,9 +130,7 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.deleteById(id);
     }
 
-  // ----------------------Mark Task As Completed ----------------------
-
-
+    // ----------------------Mark Task As Completed ----------------------
 
     /**
      * Marks a task as COMPLETED by its ID.
@@ -150,8 +150,7 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toDto(updatedTask);
     }
 
-      // ----------Filter Tasks By Status And Due Date ------------
-
+    // ----------Filter Tasks By Status And Due Date ------------
 
     /**
      * Filters tasks based on status and/or due date.
@@ -177,5 +176,7 @@ public class TaskServiceImpl implements TaskService {
 
         return taskMapper.toDtoList(tasks);
     }
+
+
 
 }

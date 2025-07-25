@@ -61,4 +61,13 @@ public interface TaskService {
      * @return a list of filtered TaskDto
      */
     List<TaskDto> filterTasks(TaskStatus status, LocalDate dueDate);
+
+
+    /**
+     * Checks if a task with the given title already exists.
+     *
+     * @param title the title to check
+     * @return true if a task with the title exists, false otherwise
+     */
+    boolean isTitleTaken(String title);
 }

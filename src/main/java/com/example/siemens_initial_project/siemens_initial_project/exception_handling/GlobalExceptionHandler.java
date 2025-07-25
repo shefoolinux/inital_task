@@ -18,20 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    /**
-     * Handles {@link IllegalArgumentException} exceptions and displays an error
-     * page with a custom message.
-     *
-     * @param ex    the exception thrown
-     * @param model the model used to pass data to the view
-     * @return the error view name
-     */
-    @ExceptionHandler(IllegalArgumentException.class)
-    public String handleIllegalArgumentHtml(IllegalArgumentException ex, Model model) {
-        model.addAttribute("errorMessage", "Invalid input: " + ex.getMessage());
-        return "error";
-    }
-
+ 
     /**
      * Handles all generic exceptions that are not explicitly handled elsewhere.
      *

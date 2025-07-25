@@ -48,4 +48,14 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
      * @return a list of tasks with the specified status and due date
      */
     List<Task> findByStatusAndDueDate(TaskStatus status, LocalDate dueDate);
+
+    /**
+     * Check if a task with the given title already exists.
+     *
+     * @param title the title to check
+     * @return true if a task with the title exists, false otherwise
+     */
+
+    boolean existsByTitle(String title);
+
 }

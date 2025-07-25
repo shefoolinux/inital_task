@@ -40,8 +40,7 @@ public class TaskViewController {
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
 
-      // ----------------------Get All Tasks----------------------
-
+    // ----------------------Get All Tasks----------------------
 
     /**
      * Show all tasks on the main page.
@@ -56,9 +55,7 @@ public class TaskViewController {
         return "tasks/list";
     }
 
-
-      // ----------------------Delete A Task ----------------------
-
+    // ----------------------Delete A Task ----------------------
 
     /**
      * Delete a task by its ID.
@@ -72,8 +69,7 @@ public class TaskViewController {
         return "redirect:/tasks";
     }
 
-      // ----------------------Update A Task ----------------------
-
+    // ----------------------Update A Task ----------------------
 
     /**
      * Show the update form for a specific task.
@@ -108,9 +104,7 @@ public class TaskViewController {
         return "redirect:/tasks";
     }
 
-  // ----------------------Create A New Task ----------------------
-
-
+    // ----------------------Create A New Task ----------------------
 
     /**
      * Show the form to create a new task.
@@ -131,18 +125,26 @@ public class TaskViewController {
      * @param bindingResult to check for form validation
      * @return redirect to list or show same form if there are errors
      */
-    @PostMapping("/create")
-    public String createTask(@Valid TaskDto taskDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "tasks/create_task";
-        }
-        taskService.createTask(taskDto);
-        return "redirect:/tasks";
+@PostMapping("/create")
+public String createTask(@Valid TaskDto taskDto, BindingResult bindingResult, Model model) {
+    if (bindingResult.hasErrors()) {
+        model.addAttribute("task", taskDto); 
+        return "tasks/create_task";
     }
 
+    boolean isDuplicate = taskService.isTitleTaken(taskDto.getTitle());
+    if (isDuplicate) {
+        model.addAttribute("task", taskDto);
+        model.addAttribute("error", "A task with this title already exists.");
+        return "tasks/create_task";
+    }
 
-      // ----------Filter Tasks By Status And Due Date ------------
+    taskService.createTask(taskDto);
+    return "redirect:/tasks";
+}
 
+
+    // ----------Filter Tasks By Status And Due Date ------------
 
     /**
      * Filter tasks by due date and/or status.
