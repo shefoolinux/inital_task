@@ -61,6 +61,7 @@ public class TaskServiceImpl implements TaskService {
      * @param title the title to check
      * @return true if a task with the title exists, false otherwise
      */
+    @Override
     public boolean isTitleTaken(String title) {
         return taskRepository.existsByTitle(title);
     }
