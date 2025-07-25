@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  * and returns a user-friendly error page.
  * </p>
  * 
- * @author Abdul Shafi
+ * @author AbdulShafi
  * @version 1.0
  */
 @ControllerAdvice

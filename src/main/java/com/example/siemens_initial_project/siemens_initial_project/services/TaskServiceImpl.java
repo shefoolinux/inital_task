@@ -26,6 +26,10 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
 
+
+      // ----------------------Create A New Task ----------------------
+
+
     /**
      * Creates a new task.
      * If the title already exists, it throws an IllegalStateException.
@@ -52,6 +56,11 @@ public class TaskServiceImpl implements TaskService {
         return savedTaskDto;
     }
 
+
+  // ----------------------Get All Tasks----------------------
+
+
+
     /**
      * Retrieves all tasks from the database.
      *
@@ -64,6 +73,10 @@ public class TaskServiceImpl implements TaskService {
         List<TaskDto> taskDtos = taskMapper.toDtoList(tasks);
         return taskDtos;
     }
+
+
+  // ----------------------Update A Task ----------------------
+
 
     /**
      * Updates a task by its ID.
@@ -96,6 +109,10 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toDto(updatedTask);
     }
 
+
+      // ----------------------Delete A Task ----------------------
+
+
     /**
      * Deletes a task by its ID.
      * If the task is not found, throws IllegalArgumentException.
@@ -110,6 +127,10 @@ public class TaskServiceImpl implements TaskService {
         }
         taskRepository.deleteById(id);
     }
+
+  // ----------------------Mark Task As Completed ----------------------
+
+
 
     /**
      * Marks a task as COMPLETED by its ID.
@@ -128,6 +149,9 @@ public class TaskServiceImpl implements TaskService {
         Task updatedTask = taskRepository.save(task);
         return taskMapper.toDto(updatedTask);
     }
+
+      // ----------Filter Tasks By Status And Due Date ------------
+
 
     /**
      * Filters tasks based on status and/or due date.

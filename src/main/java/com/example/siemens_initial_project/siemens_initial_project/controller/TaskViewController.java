@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
  * It allows users to view, create, update, delete, and filter tasks
  * using Thymeleaf templates.
  * 
- * @author Abdul Shafi
+ * @author AbdulShafi
  * @version 1.0
  */
 @Controller
@@ -39,6 +39,9 @@ public class TaskViewController {
     private final TaskService taskService;
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
+
+      // ----------------------Get All Tasks----------------------
+
 
     /**
      * Show all tasks on the main page.
@@ -53,6 +56,10 @@ public class TaskViewController {
         return "tasks/list";
     }
 
+
+      // ----------------------Delete A Task ----------------------
+
+
     /**
      * Delete a task by its ID.
      * 
@@ -64,6 +71,9 @@ public class TaskViewController {
         taskService.deleteTask(id);
         return "redirect:/tasks";
     }
+
+      // ----------------------Update A Task ----------------------
+
 
     /**
      * Show the update form for a specific task.
@@ -98,6 +108,10 @@ public class TaskViewController {
         return "redirect:/tasks";
     }
 
+  // ----------------------Create A New Task ----------------------
+
+
+
     /**
      * Show the form to create a new task.
      * 
@@ -125,6 +139,10 @@ public class TaskViewController {
         taskService.createTask(taskDto);
         return "redirect:/tasks";
     }
+
+
+      // ----------Filter Tasks By Status And Due Date ------------
+
 
     /**
      * Filter tasks by due date and/or status.
