@@ -94,15 +94,26 @@ public class TaskViewController {
      * @param bindingResult used to check for form errors
      * @return the updated list or the same page if there are errors
      */
-    @PostMapping("/update")
-    public String updateTask(@Valid TaskDto taskDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "tasks/update";
-        }
-
-        taskService.updateTask(taskDto.getId(), taskDto);
-        return "redirect:/tasks";
+   @PostMapping("/update")
+public String updateTask(@Valid TaskDto taskDto, BindingResult bindingResult, Model model) {
+    if (bindingResult.hasErrors()) {
+        model.addAttribute("task", taskDto);
+        return "tasks/update";
     }
+
+    TaskDto existingTask = taskService.getTaskById(taskDto.getId());
+
+    boolean isDuplicate = taskService.isTitleTaken(taskDto.getTitle());
+
+    if (isDuplicate && !taskDto.getTitle().equals(existingTask.getTitle())) {
+        model.addAttribute("task", taskDto);
+        model.addAttribute("error", "A task with this title already exists.");
+        return "tasks/update";
+    }
+
+    taskService.updateTask(taskDto.getId(), taskDto);
+    return "redirect:/tasks";
+}
 
     // ----------------------Create A New Task ----------------------
 
@@ -125,24 +136,23 @@ public class TaskViewController {
      * @param bindingResult to check for form validation
      * @return redirect to list or show same form if there are errors
      */
-@PostMapping("/create")
-public String createTask(@Valid TaskDto taskDto, BindingResult bindingResult, Model model) {
-    if (bindingResult.hasErrors()) {
-        model.addAttribute("task", taskDto); 
-        return "tasks/create_task";
+    @PostMapping("/create")
+    public String createTask(@Valid TaskDto taskDto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("task", taskDto);
+            return "tasks/create_task";
+        }
+
+        boolean isDuplicate = taskService.isTitleTaken(taskDto.getTitle());
+        if (isDuplicate) {
+            model.addAttribute("task", taskDto);
+            model.addAttribute("error", "A task with this title already exists.");
+            return "tasks/create_task";
+        }
+
+        taskService.createTask(taskDto);
+        return "redirect:/tasks";
     }
-
-    boolean isDuplicate = taskService.isTitleTaken(taskDto.getTitle());
-    if (isDuplicate) {
-        model.addAttribute("task", taskDto);
-        model.addAttribute("error", "A task with this title already exists.");
-        return "tasks/create_task";
-    }
-
-    taskService.createTask(taskDto);
-    return "redirect:/tasks";
-}
-
 
     // ----------Filter Tasks By Status And Due Date ------------
 

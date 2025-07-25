@@ -70,4 +70,6 @@ public interface TaskService {
      * @return true if a task with the title exists, false otherwise
      */
     boolean isTitleTaken(String title);
+
+    TaskDto getTaskById(Long id);
 }

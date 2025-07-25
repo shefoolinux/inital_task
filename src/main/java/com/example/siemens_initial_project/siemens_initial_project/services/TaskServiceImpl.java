@@ -80,6 +80,22 @@ public class TaskServiceImpl implements TaskService {
         return taskDtos;
     }
 
+// ----------------------Get Task By ID----------------------
+    /**
+     * Retrieves a task by its ID.
+     * If the task is not found, throws IllegalArgumentException.
+     *
+     * @param id the ID of the task to retrieve
+     * @return the TaskDto corresponding to the ID
+     */
+    @Override
+    public TaskDto getTaskById(Long id) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Task with id " + id + " not found"));
+        return taskMapper.toDto(task);
+    }
+
+
     // ----------------------Update A Task ----------------------
 
     /**
@@ -177,6 +193,8 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toDtoList(tasks);
     }
 
+
+    
 
 
 }
