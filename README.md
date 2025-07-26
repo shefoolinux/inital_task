@@ -1,5 +1,5 @@
-# inital_task
-# inital_task
+# initial_task
+# initial_task
 You can find the JavaDoc HTML here:
 
     target/site/apidocs/index.html
