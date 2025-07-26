@@ -54,7 +54,6 @@ public class TaskServiceImpl implements TaskService {
         return savedTaskDto;
     }
 
-
     /**
      * Checks if a task with the given title already exists.
      *
@@ -81,7 +80,7 @@ public class TaskServiceImpl implements TaskService {
         return taskDtos;
     }
 
-// ----------------------Get Task By ID----------------------
+    // ----------------------Get Task By ID----------------------
     /**
      * Retrieves a task by its ID.
      * If the task is not found, throws IllegalArgumentException.
@@ -95,7 +94,6 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(() -> new IllegalArgumentException("Task with id " + id + " not found"));
         return taskMapper.toDto(task);
     }
-
 
     // ----------------------Update A Task ----------------------
 
@@ -125,6 +123,7 @@ public class TaskServiceImpl implements TaskService {
         }
 
         taskMapper.update(existingTask, taskDto);
+        existingTask.setId(id);
 
         Task updatedTask = taskRepository.save(existingTask);
         return taskMapper.toDto(updatedTask);
@@ -193,9 +192,5 @@ public class TaskServiceImpl implements TaskService {
 
         return taskMapper.toDtoList(tasks);
     }
-
-
-    
-
 
 }
