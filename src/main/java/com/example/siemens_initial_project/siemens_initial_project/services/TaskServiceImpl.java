@@ -3,6 +3,7 @@ package com.example.siemens_initial_project.siemens_initial_project.services;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.siemens_initial_project.siemens_initial_project.dto.TaskDto;
@@ -75,7 +76,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDto> getAllTasks() {
-        List<Task> tasks = taskRepository.findAll();
+        List<Task> tasks = taskRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
         List<TaskDto> taskDtos = taskMapper.toDtoList(tasks);
         return taskDtos;
     }
@@ -122,7 +123,7 @@ public class TaskServiceImpl implements TaskService {
             throw new IllegalStateException("Task with title '" + taskDto.getTitle() + "' already exists");
         }
 
-        taskMapper.update(existingTask, taskDto);
+        existingTask = taskMapper.update(existingTask, taskDto);
         existingTask.setId(id);
 
         Task updatedTask = taskRepository.save(existingTask);

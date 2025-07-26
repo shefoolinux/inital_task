@@ -2,11 +2,9 @@ package com.example.siemens_initial_project.siemens_initial_project.mapper;
 
 import java.util.List;
 
-import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import com.example.siemens_initial_project.siemens_initial_project.dto.TaskDto;
 import com.example.siemens_initial_project.siemens_initial_project.model.Task;
@@ -60,7 +58,6 @@ public interface TaskMapper {
      * @param task    the target Task entity to update
      * @param taskDto the source Task DTO containing the new values
      */
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
-    void update(@MappingTarget Task task, TaskDto taskDto);
+    Task update(@MappingTarget Task task, TaskDto taskDto);
 }
