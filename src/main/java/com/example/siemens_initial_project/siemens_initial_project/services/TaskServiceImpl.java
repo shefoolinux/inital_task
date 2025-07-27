@@ -123,8 +123,8 @@ public class TaskServiceImpl implements TaskService {
             throw new IllegalStateException("Task with title '" + taskDto.getTitle() + "' already exists");
         }
 
+        taskDto.setId(existingTask.getId());
         existingTask = taskMapper.update(existingTask, taskDto);
-        existingTask.setId(id);
 
         Task updatedTask = taskRepository.save(existingTask);
         return taskMapper.toDto(updatedTask);
