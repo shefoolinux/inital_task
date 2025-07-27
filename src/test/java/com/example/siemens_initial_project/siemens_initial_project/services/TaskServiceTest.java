@@ -16,6 +16,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 
 import com.example.siemens_initial_project.siemens_initial_project.dto.TaskDto;
 import com.example.siemens_initial_project.siemens_initial_project.mapper.TaskMapper;
@@ -77,7 +78,7 @@ public class TaskServiceTest {
     @Test
     public void getAllTasks_ShouldReturnAllTasksSuccessfully() {
 
-        when(taskRepository.findAll()).thenReturn(List.of(taskEntity));
+        when(taskRepository.findAll(Sort.by(Sort.Direction.ASC,"id"))).thenReturn(List.of(taskEntity));
         when(taskMapper.toDtoList(List.of(taskEntity))).thenReturn(List.of(taskDto));
 
         List<TaskDto> tasks = taskService.getAllTasks();
@@ -110,7 +111,7 @@ public class TaskServiceTest {
 
         when(taskRepository.findById(taskId)).thenReturn(Optional.of(taskEntity));
         when(taskRepository.findByTitle(updatedDto.getTitle())).thenReturn(Optional.empty());
-        doNothing().when(taskMapper).update(taskEntity, updatedDto);
+        when(taskMapper.update(taskEntity, updatedDto)).thenReturn(taskEntity);
         when(taskRepository.save(taskEntity)).thenReturn(updatedTask);
         when(taskMapper.toDto(updatedTask)).thenReturn(updatedDto);
 
