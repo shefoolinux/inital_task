@@ -7,9 +7,7 @@ import com.example.siemens_initial_project.siemens_initial_project.model.enums.T
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * Data Transfer Object (DTO) for Task.
@@ -17,11 +15,10 @@ import lombok.Setter;
  * This class is used to transfer task data between layers,
  * such as from client to server or between services.
  */
-@Setter
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class TaskDto {
+
 
     /**
      * The unique identifier of the task.
@@ -56,4 +53,48 @@ public class TaskDto {
      * The current status of the task.
      */
     private TaskStatus status;
+
+
+    //--------------- Setters And Getters-------------------
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+
+    
 }
