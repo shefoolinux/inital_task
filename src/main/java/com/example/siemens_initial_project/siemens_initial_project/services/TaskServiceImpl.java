@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.domain.Sort;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 import org.springframework.stereotype.Service;
 
 import com.example.siemens_initial_project.siemens_initial_project.dto.TaskDto;
@@ -76,7 +77,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDto> getAllTasks() {
-        List<Task> tasks = taskRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+        List<Task> tasks = taskRepository.findAll(Sort.by(ASC, "id"));
         List<TaskDto> taskDtos = taskMapper.toDtoList(tasks);
         return taskDtos;
     }
@@ -188,7 +189,7 @@ public class TaskServiceImpl implements TaskService {
         } else if (dueDate != null) {
             tasks = taskRepository.findByDueDate(dueDate);
         } else {
-            tasks = taskRepository.findAll();
+            tasks = taskRepository.findAll(Sort.by(ASC, "id"));
         }
 
         return taskMapper.toDtoList(tasks);
