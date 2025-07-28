@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14.18
+    container_name: siemens-db
+    environment:
+      POSTGRES_DB: siemens_project
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 26122003
+    ports:
+      - "5433:5432"
+    networks:
+      - siemens-net
+
+  app:
+    image: abdulshafi/siemens-initial-project:v1
+    container_name: siemens-app
+    depends_on:
+      - db
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://siemens-db:5432/siemens_project
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 26122003
+    ports:
+      - "8080:8080"
+    networks:
+      - siemens-net
+
+networks:
+  siemens-net:
+    driver: bridge
