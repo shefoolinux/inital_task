@@ -130,7 +130,7 @@ public class TaskControllerTest {
         when(taskService.markAsCompleted(anyLong())).thenReturn(result);
 
         this.mockMvc.perform(put("/api/tasks/{id}/complete", taskId)
-                           .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value(result.getTitle()))
                 .andExpect(jsonPath("$.description").value(result.getDescription()))
@@ -138,30 +138,25 @@ public class TaskControllerTest {
                 .andExpect(jsonPath("$.status").value(result.getStatus().name()));
     }
 
+    @Test
+    public void filterTasks_ShouldReturnFilteredTasks() throws Exception {
 
+        TaskDto task1 = new TaskDto(1L, "Task 1", "Description 1", today, TaskStatus.PENDING);
+        TaskDto task2 = new TaskDto(2L, "Task 2", "Description 2", today, TaskStatus.IN_PROGRESS);
+        List<TaskDto> filteredTasks = new ArrayList<>();
+        filteredTasks.add(task1);
+        filteredTasks.add(task2);
 
-@Test
-public void filterTasks_ShouldReturnFilteredTasks() throws Exception {
+        when(taskService.filterTasks(eq(TaskStatus.PENDING), any())).thenReturn(filteredTasks);
 
-    TaskDto task1 = new TaskDto(1L, "Task 1", "Description 1", LocalDate.now(), TaskStatus.PENDING);
-    TaskDto task2 = new TaskDto(2L, "Task 2", "Description 2", LocalDate.now(), TaskStatus.IN_PROGRESS);
-    List<TaskDto> filteredTasks = new ArrayList<>();
-    filteredTasks.add(task1);
-    filteredTasks.add(task2);
-
-
-    when(taskService.filterTasks(eq(TaskStatus.PENDING), any())).thenReturn(filteredTasks);
-
-    mockMvc.perform(get("/api/tasks/filter")
-            .param("status", "PENDING")
-            .param("dueDate", LocalDate.now().toString())
-            .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.length()").value(2))
-        .andExpect(jsonPath("$[0].title").value("Task 1"))
-        .andExpect(jsonPath("$[1].title").value("Task 2"));
-}
-
-
+        mockMvc.perform(get("/api/tasks/filter")
+                .param("status", "PENDING")
+                .param("dueDate", today.toString())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].title").value("Task 1"))
+                .andExpect(jsonPath("$[1].title").value("Task 2"));
+    }
 
 }
