@@ -3,7 +3,7 @@ package com.example.siemens_initial_project.siemens_initial_project.controller;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.siemens_initial_project.siemens_initial_project.dto.TaskDto;
@@ -42,9 +43,10 @@ public class TaskController {
       @ApiResponse(responseCode = "200", description = "Successfully retrieved tasks")
   })
   @GetMapping
-  public ResponseEntity<List<TaskDto>> getAllTasks() {
+  @ResponseStatus(HttpStatus.OK)
+  public List<TaskDto> getAllTasks() {
     List<TaskDto> tasks = taskService.getAllTasks();
-    return ResponseEntity.ok(tasks);
+    return tasks;
   }
 
   // ----------------------Create A New Task ----------------------
@@ -55,9 +57,10 @@ public class TaskController {
       @ApiResponse(responseCode = "400", description = "Invalid input")
   })
   @PostMapping
-  public ResponseEntity<TaskDto> createTask(@Valid @RequestBody TaskDto taskDto) {
+  @ResponseStatus(HttpStatus.CREATED)
+  public TaskDto createTask(@Valid @RequestBody TaskDto taskDto) {
     TaskDto createdTask = taskService.createTask(taskDto);
-    return ResponseEntity.ok(createdTask);
+    return createdTask;
   }
 
   // ----------------------Update A Task ----------------------
@@ -68,9 +71,10 @@ public class TaskController {
       @ApiResponse(responseCode = "404", description = "Task not found")
   })
   @PutMapping("/{id}")
-  public ResponseEntity<TaskDto> updateTask(@PathVariable Long id, @Valid @RequestBody TaskDto taskDto) {
+  @ResponseStatus(HttpStatus.OK)
+  public TaskDto updateTask(@PathVariable Long id, @Valid @RequestBody TaskDto taskDto) {
     TaskDto updatedTask = taskService.updateTask(id, taskDto);
-    return ResponseEntity.ok(updatedTask);
+    return updatedTask;
   }
 
   // ----------------------Delete A Task ----------------------
@@ -81,9 +85,9 @@ public class TaskController {
       @ApiResponse(responseCode = "404", description = "Task not found")
   })
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteTask(@PathVariable Long id) {
     taskService.deleteTask(id);
-    return ResponseEntity.noContent().build();
   }
 
   // ----------------------Mark Task As Completed ----------------------
@@ -94,9 +98,10 @@ public class TaskController {
       @ApiResponse(responseCode = "404", description = "Task not found")
   })
   @PutMapping("/{id}/complete")
-  public ResponseEntity<TaskDto> markAsCompleted(@PathVariable Long id) {
+  @ResponseStatus(HttpStatus.OK)
+  public TaskDto markAsCompleted(@PathVariable Long id) {
     TaskDto updatedTask = taskService.markAsCompleted(id);
-    return ResponseEntity.ok(updatedTask);
+    return updatedTask;
   }
 
   // ----------Filter Tasks By Status And Due Date ------------
@@ -106,10 +111,11 @@ public class TaskController {
       @ApiResponse(responseCode = "200", description = "Tasks filtered successfully")
   })
   @GetMapping("/filter")
-  public ResponseEntity<List<TaskDto>> filterTasks(
+  @ResponseStatus(HttpStatus.OK)
+  public List<TaskDto> filterTasks(
       @RequestParam(required = false) TaskStatus status,
       @RequestParam(required = false) LocalDate dueDate) {
     List<TaskDto> filteredTasks = taskService.filterTasks(status, dueDate);
-    return ResponseEntity.ok(filteredTasks);
+    return filteredTasks;
   }
 }
