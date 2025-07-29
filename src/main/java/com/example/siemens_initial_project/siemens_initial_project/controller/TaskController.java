@@ -53,7 +53,7 @@ public class TaskController {
 
   @Operation(summary = "Create a new task", description = "Creates a task based on the provided task data.")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Task created successfully"),
+      @ApiResponse(responseCode = "201", description = "Task created successfully"),
       @ApiResponse(responseCode = "400", description = "Invalid input")
   })
   @PostMapping
