@@ -1,5 +1,8 @@
 # 📌 Task Management App
 
+![Task Management App Screenshot](https://github.com/shefoolinux/initial_task/blob/fbf07d77c4710904b05e1c778d6b681dddca410d/Task%20Management%20App.png?raw=true)
+
+
 A lightweight web application for managing daily tasks, built with **Spring Boot** and a responsive **Thymeleaf** frontend.  
 It supports full task lifecycle management including creation, updating, completion, and filtering — all wrapped in a modern architecture with clean code practices and Docker support for smooth deployment.
 
