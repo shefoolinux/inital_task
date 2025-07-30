@@ -30,3 +30,56 @@ It supports full task lifecycle management including creation, updating, complet
 - **Lombok**
 - **JUnit + Spring Test**
 - **Docker**
+
+
+---
+
+## 🧪 Running the App
+
+### 🔧 Local Setup
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/shefoolinux/initial_task
+   cd initial_task
+
+2. Run the app using Maven:
+   ```bash
+   mvn spring-boot:run
+
+3. Visit the app:
+   ```bash
+   http://localhost:8080/tasks
+   
+
+### 🐳 Run with Docker
+
+1. Make sure Docker is installed and running:
+   ```bash
+   docker-compose up --build
+
+
+---
+
+## 🧪 Documentation
+
+
+### 📘 API Documentation – Swagger UI
+
+1. Once the app is running locally, you can access the Swagger UI here:
+   ```bash
+   http://localhost:8080/swagger-ui.html
+   
+### 📚 Code Documentation – JavaDoc
+
+1. To generate JavaDoc for the project:
+   ```bash
+   mvn javadoc:javadoc
+
+2. The generated documentation will be available at:
+   ```bash
+   target/site/apidocs/index.html
+
+2. Open it in your browser to explore detailed documentation for classes and methods:
+
+
