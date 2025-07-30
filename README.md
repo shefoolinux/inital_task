@@ -38,16 +38,19 @@ It supports full task lifecycle management including creation, updating, complet
 
 ### 🔧 Local Setup
 
-1. Clone the repository:
+1. Go to /src/main/resources:
+    and change **spring.profiles.active=docker** to **spring.profiles.active=local**
+
+2. Clone the repository:
    ```bash
    git clone https://github.com/shefoolinux/initial_task
    cd initial_task
 
-2. Run the app using Maven:
+3. Run the app using Maven:
    ```bash
    mvn spring-boot:run
 
-3. Visit the app:
+4. Visit the app:
    ```bash
    http://localhost:8080/tasks
    
@@ -72,14 +75,17 @@ It supports full task lifecycle management including creation, updating, complet
    
 ### 📚 Code Documentation – JavaDoc
 
-1. To generate JavaDoc for the project:
+1. Go to /src/main/resources:
+    and change **spring.profiles.active=docker** to **spring.profiles.active=local**
+
+2. To generate JavaDoc for the project:
    ```bash
    mvn javadoc:javadoc
 
-2. The generated documentation will be available at:
+3. The generated documentation will be available at:
    ```bash
-   target/site/apidocs/index.html
+   target/report/apidocs/index.html
 
-2. Open it in your browser to explore detailed documentation for classes and methods:
+4. Open it in your browser to explore detailed documentation for classes and methods:
 
 

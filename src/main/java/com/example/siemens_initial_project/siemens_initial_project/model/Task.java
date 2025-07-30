@@ -15,13 +15,13 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 /**
- * Represents a Task entity stored in the database.
- * Each task has a unique title, description, due date, and status.
+ * Represents a Task entity stored in the database. Each task has a unique
+ * title, description, due date, and status.
  */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "title" }, name = "unique_title_constraint"))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"title"}, name = "unique_title_constraint"))
 public class Task {
 
     /**
@@ -55,6 +55,7 @@ public class Task {
     @Column(nullable = false)
     private TaskStatus status;
 
+    // --------------- Setters And Getters-------------------
     public Long getId() {
         return id;
     }
@@ -94,7 +95,5 @@ public class Task {
     public void setStatus(TaskStatus status) {
         this.status = status;
     }
-
-    // --------------- Setters And Getters-------------------
 
 }

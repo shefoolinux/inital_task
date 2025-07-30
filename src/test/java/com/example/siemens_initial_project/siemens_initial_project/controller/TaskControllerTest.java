@@ -2,9 +2,7 @@ package com.example.siemens_initial_project.siemens_initial_project.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
 import static org.hamcrest.Matchers.is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +22,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.example.siemens_initial_project.siemens_initial_project.dto.TaskDto;
 import com.example.siemens_initial_project.siemens_initial_project.model.Task;
 import com.example.siemens_initial_project.siemens_initial_project.model.enums.TaskStatus;

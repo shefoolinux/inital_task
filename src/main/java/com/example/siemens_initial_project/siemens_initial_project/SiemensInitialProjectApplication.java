@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SiemensInitialProjectApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SiemensInitialProjectApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SiemensInitialProjectApplication.class, args);
+    }
 
 }

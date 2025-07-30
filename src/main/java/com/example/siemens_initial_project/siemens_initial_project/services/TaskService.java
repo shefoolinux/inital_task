@@ -9,8 +9,8 @@ import com.example.siemens_initial_project.siemens_initial_project.model.enums.T
 /**
  * Service interface for managing tasks.
  * <p>
- * Defines the operations for creating, retrieving, updating,
- * deleting, completing, and filtering tasks.
+ * Defines the operations for creating, retrieving, updating, deleting,
+ * completing, and filtering tasks.
  */
 public interface TaskService {
 
@@ -61,7 +61,6 @@ public interface TaskService {
      * @return a list of filtered TaskDto
      */
     List<TaskDto> filterTasks(TaskStatus status, LocalDate dueDate);
-
 
     /**
      * Checks if a task with the given title already exists.

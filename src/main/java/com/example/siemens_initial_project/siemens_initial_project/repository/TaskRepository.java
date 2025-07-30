@@ -55,7 +55,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
      * @param title the title to check
      * @return true if a task with the title exists, false otherwise
      */
-
     boolean existsByTitle(String title);
 
 }

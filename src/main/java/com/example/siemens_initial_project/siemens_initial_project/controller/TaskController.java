@@ -27,95 +27,83 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 // Controller for handling all task-related operations
-
 @RestController
 @RequestMapping("/api/tasks")
 @RequiredArgsConstructor
 @Tag(name = "Task Controller", description = "APIs for managing tasks")
 public class TaskController {
 
-  private final TaskService taskService;
+    private final TaskService taskService;
 
-  // ----------------------Get All Tasks----------------------
+    // ----------------------Get All Tasks----------------------
+    @Operation(summary = "Get all tasks", description = "Returns a list of all tasks in the system.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved tasks")
+    })
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaskDto> getAllTasks() {
+        return taskService.getAllTasks();
+    }
 
-  @Operation(summary = "Get all tasks", description = "Returns a list of all tasks in the system.")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Successfully retrieved tasks")
-  })
-  @GetMapping
-  @ResponseStatus(HttpStatus.OK)
-  public List<TaskDto> getAllTasks() {
-    List<TaskDto> tasks = taskService.getAllTasks();
-    return tasks;
-  }
+    // ----------------------Create A New Task ----------------------
+    @Operation(summary = "Create a new task", description = "Creates a task based on the provided task data.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Task created successfully"),
+        @ApiResponse(responseCode = "400", description = "Invalid input")
+    })
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public TaskDto createTask(@Valid @RequestBody TaskDto taskDto) {
+        return taskService.createTask(taskDto);
+    }
 
-  // ----------------------Create A New Task ----------------------
+    // ----------------------Update A Task ----------------------
+    @Operation(summary = "Update a task", description = "Updates the task with the given ID.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Task updated successfully"),
+        @ApiResponse(responseCode = "404", description = "Task not found")
+    })
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public TaskDto updateTask(@PathVariable Long id, @Valid @RequestBody TaskDto taskDto) {
+        return taskService.updateTask(id, taskDto);
+    }
 
-  @Operation(summary = "Create a new task", description = "Creates a task based on the provided task data.")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Task created successfully"),
-      @ApiResponse(responseCode = "400", description = "Invalid input")
-  })
-  @PostMapping
-  @ResponseStatus(HttpStatus.CREATED)
-  public TaskDto createTask(@Valid @RequestBody TaskDto taskDto) {
-    TaskDto createdTask = taskService.createTask(taskDto);
-    return createdTask;
-  }
+    // ----------------------Delete A Task ----------------------
+    @Operation(summary = "Delete a task", description = "Deletes the task with the given ID.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Task deleted successfully"),
+        @ApiResponse(responseCode = "404", description = "Task not found")
+    })
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTask(@PathVariable Long id) {
+        taskService.deleteTask(id);
+    }
 
-  // ----------------------Update A Task ----------------------
+    // ----------------------Mark Task As Completed ----------------------
+    @Operation(summary = "Mark task as completed", description = "Marks the task with the given ID as completed.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Task marked as completed"),
+        @ApiResponse(responseCode = "404", description = "Task not found")
+    })
+    @PutMapping("/{id}/complete")
+    @ResponseStatus(HttpStatus.OK)
+    public TaskDto markAsCompleted(@PathVariable Long id) {
+        return taskService.markAsCompleted(id);
+    }
 
-  @Operation(summary = "Update a task", description = "Updates the task with the given ID.")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Task updated successfully"),
-      @ApiResponse(responseCode = "404", description = "Task not found")
-  })
-  @PutMapping("/{id}")
-  @ResponseStatus(HttpStatus.OK)
-  public TaskDto updateTask(@PathVariable Long id, @Valid @RequestBody TaskDto taskDto) {
-    TaskDto updatedTask = taskService.updateTask(id, taskDto);
-    return updatedTask;
-  }
-
-  // ----------------------Delete A Task ----------------------
-
-  @Operation(summary = "Delete a task", description = "Deletes the task with the given ID.")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "204", description = "Task deleted successfully"),
-      @ApiResponse(responseCode = "404", description = "Task not found")
-  })
-  @DeleteMapping("/{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteTask(@PathVariable Long id) {
-    taskService.deleteTask(id);
-  }
-
-  // ----------------------Mark Task As Completed ----------------------
-
-  @Operation(summary = "Mark task as completed", description = "Marks the task with the given ID as completed.")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Task marked as completed"),
-      @ApiResponse(responseCode = "404", description = "Task not found")
-  })
-  @PutMapping("/{id}/complete")
-  @ResponseStatus(HttpStatus.OK)
-  public TaskDto markAsCompleted(@PathVariable Long id) {
-    TaskDto updatedTask = taskService.markAsCompleted(id);
-    return updatedTask;
-  }
-
-  // ----------Filter Tasks By Status And Due Date ------------
-
-  @Operation(summary = "Filter tasks", description = "Filters tasks based on status and/or due date.")
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Tasks filtered successfully")
-  })
-  @GetMapping("/filter")
-  @ResponseStatus(HttpStatus.OK)
-  public List<TaskDto> filterTasks(
-      @RequestParam(required = false) TaskStatus status,
-      @RequestParam(required = false) LocalDate dueDate) {
-    List<TaskDto> filteredTasks = taskService.filterTasks(status, dueDate);
-    return filteredTasks;
-  }
+    // ----------Filter Tasks By Status And Due Date ------------
+    @Operation(summary = "Filter tasks", description = "Filters tasks based on status and/or due date.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Tasks filtered successfully")
+    })
+    @GetMapping("/filter")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaskDto> filterTasks(
+            @RequestParam(required = false) TaskStatus status,
+            @RequestParam(required = false) LocalDate dueDate) {
+        return taskService.filterTasks(status, dueDate);
+    }
 }

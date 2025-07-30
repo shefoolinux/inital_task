@@ -8,21 +8,20 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 /**
  * Global exception handler for all controllers in the application.
  * <p>
- * This class catches and handles exceptions thrown from controller methods
- * and returns a user-friendly error page.
+ * This class catches and handles exceptions thrown from controller methods and
+ * returns a user-friendly error page.
  * </p>
- * 
+ *
  * @author AbdulShafi
  * @version 1.0
  */
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
- 
     /**
      * Handles all generic exceptions that are not explicitly handled elsewhere.
      *
-     * @param ex    the exception thrown
+     * @param ex the exception thrown
      * @param model the model used to pass data to the view
      * @return the error view name
      */
@@ -31,4 +30,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         model.addAttribute("errorMessage", "Something went wrong: " + ex.getMessage());
         return "error";
     }
+
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+public String handleResourceNotFound(ResourceNotFoundException ex, Model model) {
+    model.addAttribute("errorMessage", ex.getMessage());
+    return "error-404"; 
+}
+
 }

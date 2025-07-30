@@ -15,15 +15,14 @@ import com.example.siemens_initial_project.siemens_initial_project.model.Task;
  * This interface uses MapStruct to automatically generate the implementation at
  * compile time.
  * </p>
- * 
+ *
  * <p>
  * It supports single object mapping, list mapping, and partial updates.
  * </p>
- * 
+ *
  * @author AbdulShafi
  * @version 1.0
  */
-
 @Mapper(componentModel = "spring")
 public interface TaskMapper {
 
@@ -52,9 +51,10 @@ public interface TaskMapper {
     List<TaskDto> toDtoList(List<Task> tasks);
 
     /**
-     * Updates an existing {@link Task} entity with values from a {@link TaskDto},
+     * Updates an existing {@link Task} entity with values from a
+     * {@link TaskDto},
      *
-     * @param task    the target Task entity to update
+     * @param task the target Task entity to update
      * @param taskDto the source Task DTO containing the new values
      * @return the updated task
      */

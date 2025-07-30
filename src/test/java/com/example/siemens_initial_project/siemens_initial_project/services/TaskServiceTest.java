@@ -78,7 +78,7 @@ public class TaskServiceTest {
     @Test
     public void getAllTasks_ShouldReturnAllTasksSuccessfully() {
 
-        when(taskRepository.findAll(Sort.by(Sort.Direction.ASC,"id"))).thenReturn(List.of(taskEntity));
+        when(taskRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))).thenReturn(List.of(taskEntity));
         when(taskMapper.toDtoList(List.of(taskEntity))).thenReturn(List.of(taskDto));
 
         List<TaskDto> tasks = taskService.getAllTasks();
@@ -144,7 +144,7 @@ public class TaskServiceTest {
         when(taskRepository.save(taskEntity)).thenReturn(taskEntity);
         when(taskMapper.toDto(taskEntity)).thenReturn(taskDto);
 
-        TaskDto result = taskService.markAsCompleted(taskId); 
+        TaskDto result = taskService.markAsCompleted(taskId);
 
         assertNotNull(result);
         assertEquals(TaskStatus.COMPLETED, taskEntity.getStatus());

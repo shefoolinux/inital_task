@@ -15,7 +15,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 contact = @Contact(
                         name = "Abdul Shafi",
                         email = "mohamedsadik763@gmail.com",
-                        url = "https://www.linkedin.com/in/abdulshafi/" 
+                        url = "https://www.linkedin.com/in/abdulshafi/"
                 ),
                 license = @License(
                         name = "Apache 2.0",
@@ -23,10 +23,10 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 )
         ),
         servers = {
-                @Server(
-                        url = "http://localhost:8080",
-                        description = "Local Development Server"
-                )
+            @Server(
+                    url = "http://localhost:8080",
+                    description = "Local Development Server"
+            )
         }
 )
 public class OpenApiConfiguration {

@@ -85,6 +85,19 @@
         a.create-btn:hover {
             background-color: #3f6cd8;
         }
+
+        .complete-btn {
+            padding: 5px 10px;
+            background-color: green;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .complete-btn:hover {
+            background-color: darkgreen;
+        }
     </style>
 </head>
 
@@ -105,10 +118,7 @@
         </select>
 
         <button type="submit">Filter</button>
-
-
     </form>
-
 
     <table>
         <tr>
@@ -118,6 +128,7 @@
             <th>Due Date</th>
             <th>Status</th>
             <th>Actions</th>
+            <th>Complete</th>
         </tr>
         <tr th:each="task : ${tasks}">
             <td th:text="${task.id}"></td>
@@ -130,6 +141,13 @@
                 <a th:href="@{'/tasks/delete/' + ${task.id}}" class="action" title="Delete"
                     onclick="return confirm('Are you sure?')">🗑️</a>
             </td>
+            <td>
+                <span th:if="${task.status.name() == 'COMPLETED'}">✅ Completed</span>
+                <span th:if="${task.status.name() == 'CANCELLED'}">❌ Cancelled</span>
+                <a th:if="${task.status.name() != 'COMPLETED' and task.status.name() != 'CANCELLED'}"
+                    th:href="@{'/tasks/' + ${task.id} + '/complete'}" class="complete-btn">Mark as Completed</a>
+            </td>
+
         </tr>
     </table>
 

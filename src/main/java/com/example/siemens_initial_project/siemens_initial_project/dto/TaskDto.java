@@ -12,13 +12,12 @@ import lombok.NoArgsConstructor;
 /**
  * Data Transfer Object (DTO) for Task.
  * <p>
- * This class is used to transfer task data between layers,
- * such as from client to server or between services.
+ * This class is used to transfer task data between layers, such as from client
+ * to server or between services.
  */
 @AllArgsConstructor
 @NoArgsConstructor
 public class TaskDto {
-
 
     /**
      * The unique identifier of the task.
@@ -53,7 +52,6 @@ public class TaskDto {
      * The current status of the task.
      */
     private TaskStatus status;
-
 
     //--------------- Setters And Getters-------------------
     public Long getId() {
@@ -96,5 +94,4 @@ public class TaskDto {
         this.status = status;
     }
 
-    
 }

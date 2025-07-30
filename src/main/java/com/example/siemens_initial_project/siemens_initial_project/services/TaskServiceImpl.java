@@ -8,6 +8,7 @@ import static org.springframework.data.domain.Sort.Direction.ASC;
 import org.springframework.stereotype.Service;
 
 import com.example.siemens_initial_project.siemens_initial_project.dto.TaskDto;
+import com.example.siemens_initial_project.siemens_initial_project.exception_handling.ResourceNotFoundException;
 import com.example.siemens_initial_project.siemens_initial_project.mapper.TaskMapper;
 import com.example.siemens_initial_project.siemens_initial_project.model.Task;
 import com.example.siemens_initial_project.siemens_initial_project.model.enums.TaskStatus;
@@ -16,9 +17,8 @@ import com.example.siemens_initial_project.siemens_initial_project.repository.Ta
 import lombok.AllArgsConstructor;
 
 /**
- * Service implementation for managing tasks.
- * Provides business logic for creating, retrieving, updating, deleting, and
- * filtering tasks.
+ * Service implementation for managing tasks. Provides business logic for
+ * creating, retrieving, updating, deleting, and filtering tasks.
  */
 @Service
 @AllArgsConstructor
@@ -28,32 +28,17 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
 
-    // ----------------------Create A New Task ----------------------
-
     /**
-     * Creates a new task.
-     * If the title already exists, it throws an IllegalStateException.
-     * If status is not set, defaults to PENDING.
+     * Finds a task by ID or throws if not found.
      *
-     * @param taskDto the task data to create
-     * @return the created TaskDto
+     * @param id the ID of the task to retrieve
+     * @return the found {@link Task}
+     * @throws ResourceNotFoundException if the task with the given ID is not
+     * found
      */
-
-    @Override
-    public TaskDto createTask(TaskDto taskDto) {
-        Task task = taskMapper.toEntity(taskDto);
-
-        if (taskRepository.findByTitle(task.getTitle()).isPresent()) {
-            throw new IllegalStateException("Task with title '" + task.getTitle() + "' already exists");
-        }
-        if (task.getStatus() == null) {
-            task.setStatus(TaskStatus.PENDING);
-        }
-
-        Task savedTask = taskRepository.save(task);
-        TaskDto savedTaskDto = taskMapper.toDto(savedTask);
-
-        return savedTaskDto;
+    private Task getTaskOrThrow(Long id) {
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found"));
     }
 
     /**
@@ -67,58 +52,91 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.existsByTitle(title);
     }
 
-    // ----------------------Get All Tasks----------------------
-
+    // ----------------------Create A New Task ----------------------
     /**
-     * Retrieves all tasks from the database.
+     * Creates a new task from the given {@link TaskDto}.
+     * <p>
+     * Ensures the task title is unique and sets the default status to
+     * {@code PENDING} if not provided.
      *
-     * @return list of all TaskDto
+     * @param taskDto the task data to create
+     * @return the created task as a {@link TaskDto}
+     * @throws IllegalStateException if a task with the same title already
+     * exists
      */
+    @Override
+    public TaskDto createTask(TaskDto taskDto) {
+        Task task = taskMapper.toEntity(taskDto);
 
+        if (taskRepository.findByTitle(task.getTitle()).isPresent()) {
+            throw new IllegalStateException("Task with title '" + task.getTitle() + "' already exists");
+        }
+        if (task.getStatus() == null) {
+            task.setStatus(TaskStatus.PENDING);
+        }
+
+        Task savedTask = taskRepository.save(task);
+        return taskMapper.toDto(savedTask);
+    }
+
+    // --------------------------------Get All Tasks-------------------------------------
+
+    
+    /**
+     * Retrieves all tasks sorted by ID in ascending order.
+     *
+     * @return list of all tasks as {@link TaskDto}
+     */
     @Override
     public List<TaskDto> getAllTasks() {
         List<Task> tasks = taskRepository.findAll(Sort.by(ASC, "id"));
-        List<TaskDto> taskDtos = taskMapper.toDtoList(tasks);
-        return taskDtos;
+        return taskMapper.toDtoList(tasks);
     }
 
-    // ----------------------Get Task By ID----------------------
+
+    // --------------------------------Get Task By ID-------------------------------------
+
+
     /**
      * Retrieves a task by its ID.
-     * If the task is not found, throws IllegalArgumentException.
      *
-     * @param id the ID of the task to retrieve
-     * @return the TaskDto corresponding to the ID
+     * @param id the ID of the task
+     * @return the task as {@link TaskDto}
+     * @throws ResourceNotFoundException if the task is not found
      */
     @Override
     public TaskDto getTaskById(Long id) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Task with id " + id + " not found"));
+        Task task = getTaskOrThrow(id);
         return taskMapper.toDto(task);
     }
 
-    // ----------------------Update A Task ----------------------
+
+
+    // --------------------------------Update A Task-------------------------------------
 
     /**
-     * Updates a task by its ID.
-     * If the task is not found, throws IllegalArgumentException.
-     * If the new title already exists and is different, throws
-     * IllegalStateException.
+     * Updates an existing task with new data.
+     * <p>
+     * If the title has changed, ensures the new title is not already used by
+     * another task.
      *
-     * @param id      the ID of the task to update
-     * @param taskDto the new data for the task
-     * @return the updated TaskDto
+     * @param id the ID of the task to update
+     * @param taskDto the new task data
+     * @return the updated task as {@link TaskDto}
+     * @throws ResourceNotFoundException if the task with the given ID does not
+     * exist
+     * @throws IllegalStateException if the new title is already in use by
+     * another task
      */
-
+    
     @Override
     public TaskDto updateTask(Long id, TaskDto taskDto) {
-        Task existingTask = taskRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Task with id " + id + " not found"));
+        Task existingTask = getTaskOrThrow(id);
 
         String oldTitle = existingTask.getTitle();
 
-        boolean isTitleChangedAndAlreadyExists = !oldTitle.equals(taskDto.getTitle()) &&
-                taskRepository.findByTitle(taskDto.getTitle()).isPresent();
+        boolean isTitleChangedAndAlreadyExists = !oldTitle.equals(taskDto.getTitle())
+                && taskRepository.findByTitle(taskDto.getTitle()).isPresent();
 
         if (isTitleChangedAndAlreadyExists) {
             throw new IllegalStateException("Task with title '" + taskDto.getTitle() + "' already exists");
@@ -131,52 +149,55 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toDto(updatedTask);
     }
 
-    // ----------------------Delete A Task ----------------------
+    
+    // --------------------------------Delete A Task-------------------------------------
 
     /**
      * Deletes a task by its ID.
-     * If the task is not found, throws IllegalArgumentException.
      *
      * @param id the ID of the task to delete
+     * @throws ResourceNotFoundException if the task with the given ID does not
+     * exist
      */
-
     @Override
     public void deleteTask(Long id) {
         if (!taskRepository.existsById(id)) {
-            throw new IllegalArgumentException("Task with id " + id + " not found");
+            throw new ResourceNotFoundException("Task with id " + id + " not found");
         }
         taskRepository.deleteById(id);
     }
 
-    // ----------------------Mark Task As Completed ----------------------
+
+    // --------------------------------Mark Task As Completed-------------------------------------
 
     /**
-     * Marks a task as COMPLETED by its ID.
-     * If the task is not found, throws IllegalArgumentException.
+     * Marks a task as completed by updating its status to {@code COMPLETED}.
      *
-     * @param id the ID of the task to mark
-     * @return the updated TaskDto with status COMPLETED
+     * @param id the ID of the task to update
+     * @return the updated task as {@link TaskDto}
+     * @throws ResourceNotFoundException if the task with the given ID is not
+     * found
      */
-
     @Override
     public TaskDto markAsCompleted(Long id) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Task with id " + id + " not found"));
+
+        Task task = getTaskOrThrow(id);
 
         task.setStatus(TaskStatus.COMPLETED);
         Task updatedTask = taskRepository.save(task);
         return taskMapper.toDto(updatedTask);
     }
 
-    // ----------Filter Tasks By Status And Due Date ------------
+    // ----------------------------Filter Tasks By Status And Due Date --------------------------------
 
     /**
-     * Filters tasks based on status and/or due date.
-     * Returns all tasks if no filter is provided.
+     * Filters tasks by status, due date, or both.
+     * <p>
+     * If both parameters are null, returns all tasks sorted by ID.
      *
-     * @param status  the status to filter by (nullable)
+     * @param status the status to filter by (nullable)
      * @param dueDate the due date to filter by (nullable)
-     * @return list of TaskDto matching the filter
+     * @return list of matching tasks as {@link TaskDto}
      */
     @Override
     public List<TaskDto> filterTasks(TaskStatus status, LocalDate dueDate) {
