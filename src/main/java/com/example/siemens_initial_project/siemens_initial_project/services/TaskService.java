@@ -70,5 +70,11 @@ public interface TaskService {
      */
     boolean isTitleTaken(String title);
 
+    /**
+     * Retrieves a task by its unique identifier.
+     *
+     * @param id the ID of the task to retrieve
+     * @return the {@link TaskDto} corresponding to the given ID
+     */
     TaskDto getTaskById(Long id);
 }
