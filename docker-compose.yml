@@ -16,7 +16,7 @@ services:
       - db_data:/var/lib/postgresql/data
 
   app:
-    image: abdulshafi/siemens-initial-project:v1
+    image: abdulshafi/siemens-initial-project:v2
     container_name: siemens-app
     depends_on:
       - db
